@@ -128,7 +128,21 @@
 				return $http.get(serviceBase + 'product?id=' + ID);
 			}
 			
+			obj.getallproduct = function(ID){
+				return $http.get(serviceBase + 'allproduct?id=' + ID);
+			}
 			
+			obj.addcart = function(ID){
+				return $http.get(serviceBase + 'addcart?id=' + ID);
+			}
+			
+			obj.checkincart = function(ID){
+				return $http.get(serviceBase + 'checkincart?id=' + ID);
+			}
+			
+			obj.allproduct = function(ID){
+				return $http.get(serviceBase + 'allproducts');
+			}
 			
 			obj.checksession = function(){
 				return $http.get(serviceBase + 'session');
