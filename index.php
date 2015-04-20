@@ -168,6 +168,14 @@
                   templateUrl: 'home.php',
                   controller: 'HomeController'
                }).
+			   
+			   when('/user-home', {
+			      title: 'User Home',
+                  templateUrl: 'user_home.php',
+                  controller: 'HomeController',
+				  requireLogin: 'Yes'
+               }).
+			   
 			   when('/login', {
 			      title: 'Login',
                   templateUrl: 'login_form.php',
@@ -185,6 +193,17 @@
 					templateUrl: 'all_product.php',
 					controller: 'HomeController'
 			   }).
+			   
+			   when('/product-category/:CategoryID', {
+					title: 'Product Category',
+					templateUrl: 'all_product.php',
+					controller: 'HomeController'
+			   }).
+			   when('/mycart', {
+			      title: 'Mycart',
+                  templateUrl: 'my_cart.php',
+                  controller: 'HomeController'
+               }).
 			   
                otherwise({
                   redirectTo: '/'
