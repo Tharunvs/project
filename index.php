@@ -148,7 +148,9 @@
 				return $http.get(serviceBase + 'session');
 			}
 			
-			
+			obj.getmycart = function(){
+				return $http.get(serviceBase + 'getmycart');
+			}
 			
 			obj.insertUser = function (user) {
 			return $http.post(serviceBase + 'saveUser', user).then(function (results) {
@@ -169,12 +171,6 @@
                   controller: 'HomeController'
                }).
 			   
-			   when('/user-home', {
-			      title: 'User Home',
-                  templateUrl: 'user_home.php',
-                  controller: 'HomeController',
-				  requireLogin: 'Yes'
-               }).
 			   
 			   when('/login', {
 			      title: 'Login',
@@ -194,16 +190,7 @@
 					controller: 'HomeController'
 			   }).
 			   
-			   when('/product-category/:CategoryID', {
-					title: 'Product Category',
-					templateUrl: 'all_product.php',
-					controller: 'HomeController'
-			   }).
-			   when('/mycart', {
-			      title: 'Mycart',
-                  templateUrl: 'my_cart.php',
-                  controller: 'HomeController'
-               }).
+			   
 			   
                otherwise({
                   redirectTo: '/'
@@ -311,6 +298,9 @@
 					}
 				});             
 			};
+			
+			
+			
 			
 			$scope.removeItem = function(index){
 				$scope.list.splice(index,1);
