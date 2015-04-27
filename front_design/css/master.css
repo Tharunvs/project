@@ -82,11 +82,15 @@ color:#fff;
   float: right;
 }
 .hm-product {
-  text-align: center;
-  width: 100%;
+text-align: center;
+width: 100%;
+float: left;
+min-height: 300px;
 }
+
 .hm-product_img {
   float: left;
+  height:350px;
   width: 100%;
   overflow: hidden;
 }
