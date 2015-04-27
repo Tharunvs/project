@@ -8,6 +8,9 @@ if(!empty($_GET['check'])){
 
 if(!empty($_GET['logout'])){
     session_unset();
+	unset($_SESSION['username']);
+	unset($_SESSION['userid']);
+	unset($_SESSION['useremail']);
     session_destroy();
     $arr['logout'] = 'Logout Successfully';
 }
