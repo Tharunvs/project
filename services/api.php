@@ -200,7 +200,7 @@
 				$this->response('',204);	//"No Content" status
 			}
 		}
-		
+		/*
 		private function updateUser(){
 			if($this->get_request_method() != "POST"){
 				$this->response('',406);
@@ -221,7 +221,7 @@
 				$this->response($this->json($success),200);
 			}
 		}
-		
+		*/
 		
 		private function wishlist(){
 			if($this->get_request_method() != "GET"){
