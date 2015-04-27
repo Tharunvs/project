@@ -17,13 +17,15 @@
 							<div class="col-md-6" ng-repeat="dc in product.content">
 	                            
 								<div class="hm-product">
+								    <a href="#/product-detail/{{ dc.product_id }}">
 									<div class="hm-product_img">
 										<img ng-src="admin/upload/{{mySplit(dc.product_image,0)}}">
 									</div>
 									<div class="hm-product_dtel">
 										<p>{{ dc.product_title }}</p>
-										<h3>${{ dc.product_price }}</h3>
+										<h3>{{ dc.product_price | currency}}</h3>
 									</div>
+									</a>
 								</div>
 							</div>
 							
