@@ -136,40 +136,40 @@
 		
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script>
-	   var myApp = angular.module("myApp", ['ngRoute','ui.bootstrap']);
+	  var myApp = angular.module("myApp", ['ngRoute','ui.bootstrap']);
       
 	  myApp.factory("services", ['$http', function($http) {
-		  var serviceBase = 'services/'
+		  var serviceBase = 'services/api.php?x='
 			var obj = {};
 			obj.getcategories = function(){
 				return $http.get(serviceBase + 'categories');
 			}
 			obj.getproduct = function(ID){
-				return $http.get(serviceBase + 'product?id=' + ID);
+				return $http.get(serviceBase + 'product&id=' + ID);
 			}
 			
 			obj.getallproduct = function(ID){
-				return $http.get(serviceBase + 'allproduct?id=' + ID);
+				return $http.get(serviceBase + 'allproduct&id=' + ID);
 			}
 			
 			obj.wishlist = function(ID){
-				return $http.get(serviceBase + 'wishlist?id=' + ID);
+				return $http.get(serviceBase + 'wishlist&id=' + ID);
 			}
 			
 			obj.addcart = function(ID){
-				return $http.get(serviceBase + 'addcart?id=' + ID);
+				return $http.get(serviceBase + 'addcart&id=' + ID);
 			}
 			
 			obj.addtocart = function(ID){
-				return $http.get(serviceBase + 'addtocart?id=' + ID);
+				return $http.get(serviceBase + 'addtocart&id=' + ID);
 			}
 			
 			obj.checkinwish = function(ID){
-				return $http.get(serviceBase + 'checkinwish?id=' + ID);
+				return $http.get(serviceBase + 'checkinwish&id=' + ID);
 			}
 			
 			obj.checkincart = function(ID){
-				return $http.get(serviceBase + 'checkincart?id=' + ID);
+				return $http.get(serviceBase + 'checkincart&id=' + ID);
 			}
 			
 			obj.allproduct = function(ID){
@@ -193,22 +193,16 @@
 			}
 			
 			obj.removecart = function(ID){
-				return $http.get(serviceBase + 'removecart?id=' + ID);
+				return $http.get(serviceBase + 'removecart&id=' + ID);
 			}
 			
 			obj.removewish = function(ID){
-				return $http.get(serviceBase + 'removewish?id=' + ID);
+				return $http.get(serviceBase + 'removewish&id=' + ID);
 			}
 			
 			obj.getuserdetail = function(){
 				return $http.get(serviceBase + 'getuserdetail');
 			}
-			
-			obj.getproductdetail = function(ID){
-				return $http.get(serviceBase + 'getproductdetail?id=' + ID);
-			}
-			
-			
 			
 			obj.updatecart = function (id,qnt) {
 				return $http.post(serviceBase + 'updatecart', {id:id, quantity:qnt}).then(function (status) {
@@ -423,7 +417,7 @@
 					 $rootScope.session_email = data.loginemail;
 				     $location.path('/user-home');
 				   }
-				   //$scope.success = data.success;
+				   //$scope.success = data.success;erday
 				   $scope.error = data.error;
 				   //$location.path("user-form");
 				});

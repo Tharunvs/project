@@ -6,9 +6,9 @@
 		public $data = "";
 		
 		const DB_SERVER = "localhost";
-		const DB_USER = "root";
-		const DB_PASSWORD = "";
-		const DB = "database";
+		const DB_USER = "raviprov1";
+		const DB_PASSWORD = "s081691";
+		const DB = "raviprov1_db";
 
 		private $db = NULL;
 		private $mysqli = NULL;
@@ -28,7 +28,8 @@
 		 * Dynmically call the method based on the query string
 		 */
 		public function processApi(){
-			$func = strtolower(trim(str_replace("/","",$_REQUEST['x'])));
+			//$func = strtolower(trim(str_replace("/","",$_REQUEST['x'])));
+			$func = $_REQUEST['x'];
 			if((int)method_exists($this,$func) > 0)
 				$this->$func();
 			else
@@ -189,7 +190,7 @@
 			    $error = array('status' => "Error", "msg" => "This Email Already Registered.", "data" => $cust);
 				$this->response($this->json($error),200);
 			}else{
-			$query="INSERT INTO tbl_user(user_name, user_address, user_city, user_state, user_phone, user_zipcode, user_email, user_password, user_status, user_dateadd, user_role) VALUES ('".$cust['user_name']."','".$cust['user_address']."','".$cust['user_city']."','".$cust['user_state']."','".$cust['user_phone']."','".$cust['user_zipcode']."','".$cust['user_email']."','".md5($cust['user_password'])."',1,'".date('Y-m-d')."',3)";
+			$query="INSERT INTO tbl_user(user_name, user_address, user_city, user_state, user_phone, user_zipcode, user_email, user_password, user_status, user_role) VALUES ('".$cust['user_name']."','".$cust['user_address']."','".$cust['user_city']."','".$cust['user_state']."','".$cust['user_phone']."','".$cust['user_zipcode']."','".$cust['user_email']."','".md5($cust['user_password'])."',1,3)";
 	
 			//$query = "INSERT INTO tbl_user(".trim($columns,',').") VALUES(".trim($values,',').")";
 			if(!empty($cust)){
@@ -200,8 +201,28 @@
 				$this->response('',204);	//"No Content" status
 			}
 		}
-		/*
+		
 		private function updateUser(){
+			if($this->get_request_method() != "POST"){
+				$this->response('',406);
+			}
+
+			$cust = json_decode(file_get_contents("php://input"),true);
+			//echo '<pre>'; print_r($cust); die;
+			$id = $cust['user_id']; 
+			$sql="UPDATE tbl_user SET user_name='".$cust['user_name']."',user_address='".$cust['user_address']."',user_city='".$cust['user_city']."',user_state='".$cust['user_state']."',user_phone='".$cust['user_phone']."',user_zipcode='".$cust['user_zipcode']."',user_email='".$cust['user_email']."' WHERE user_id=$id";
+			$old = $this->mysqli->query($sql) or die($this->mysqli->error.__LINE__);
+			
+			if($this->mysqli->affected_rows > 0){
+			    $error = array('status' => "Success", "msg" => "User Updated Sucessfully.");
+				$this->response($this->json($error),200);
+			}else{
+			    $success = array('status' => "Error", "msg" => "User Not Updated.");
+				$this->response($this->json($success),200);
+			}
+		}
+		
+		/*private function updateUser(){
 			if($this->get_request_method() != "POST"){
 				$this->response('',406);
 			}
@@ -220,8 +241,8 @@
 			    $success = array('status' => "Error", "msg" => "User Not Updated.");
 				$this->response($this->json($success),200);
 			}
-		}
-		*/
+		}*/
+		
 		
 		private function wishlist(){
 			if($this->get_request_method() != "GET"){
