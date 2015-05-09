@@ -90,7 +90,7 @@
 						<div class="col-md-6">
                         <div class="form-group">
                             <label for="address" class="sr-only">Zipcode</label>
-                            <input type="text" name="zipcode" class="form-control" ng-model="form.user_zipcode" ng-pattern="/^(\d{6}-\d{5}|\d{6})$/" required placeholder="Zipcode">
+                            <input type="text" name="zipcode" class="form-control" ng-model="form.user_zipcode" ng-pattern="/^(\d{6}-\d{5}|\d{5})$/" required placeholder="Zipcode">
                             <span style="color:red" ng-show="myForm.zipcode.$dirty && myForm.zipcode.$invalid">
 						  <span ng-show="myForm.zipcode.$error.required">Address is required.</span>
 						  <span ng-show="myForm.zipcode.$error.pattern">Invalid Zipcode.</span>

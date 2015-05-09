@@ -68,17 +68,54 @@
 					<div class="product-stock" ng-show="product.product_quantity > 0">In Stock</div>
 					<div class="product-stock" ng-hide="product.product_quantity > 0">Out Of Stock</div>
 					<hr>
+					<div class="prod_demo_jump_btn">
+                <div class="wish_list_box" ng-init="wish = isinwish(pro.product_id)">
+                  <button ng-show="session_id" ng-class="wish.inwish.status ? 'wish_active' : ''" class="btn btn-info btn-small" type="button" ng-click="addWishlist(pro.product_id,session_id)" data-toggle="modal" data-target=".bs-example-modal-sm-{{pro.product_id}}"> <i class="glyphicon  glyphicon-heart"></i> </button>
+                  <button ng-hide="session_id"  class="btn btn-info btn-small" type="button" data-toggle="modal" data-target=".bs-example-modal-sm-{{pro.product_id}}"> <i class="glyphicon  glyphicon-heart"></i> </button>
+                
+				</div>
+				<div class="modal fade bs-example-modal-sm-{{pro.product_id}}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                      <div class="modal-header for_added_msg">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      </div>
+					  <div>
+                      <div ng-show="session_id">{{ message }}</div>
+					  <div ng-hide="session_id">{{ session_id }}
+					  <div class="col-md-12">
+
+					   <form role="form" name="myForm" ng-submit="loginForm(form)" method="post" id="login-form" novalidate autocomplete="off">
+							<div class="form-group">
+								<label for="email" class="sr-only">Email</label>
+								<input type="email" name="email" id="email" ng-model="form.email" required class="form-control" placeholder="somebody@example.com">
+								<span style="color:red" ng-show="myForm.email.$dirty && myForm.email.$invalid">
+								<span ng-show="myForm.email.$error.required">Email is required.</span>
+								<span ng-show="myForm.email.$error.email">Invalid email address.</span>
+								</span>
+							</div>
+							<div class="form-group">
+								<label for="key" class="sr-only">Password</label>
+								<input type="password" name="password" id="key" class="form-control" name="password" ng-model="form.password" required placeholder="Password">
+								<span style="color:red" ng-show="myForm.password.$dirty && myForm.password.$invalid">
+					  <span ng-show="myForm.password.$error.required">Password is required.</span>
+					  </span>
+							</div>
+							
+							<input type="submit" ng-disabled="myForm.$invalid" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Log in">
+						</form>
+  					</div></div>
+					<div class="clearfix"></div>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+				<div class="add_cart_box" ng-init="cart = isincart(pro.product_id)">
+                  <button ng-show="session_id" ng-class="cart.incart.status ? 'wish_active' : ''" class="btn btn-info btn-small" ng-click="addcart(pro.product_id,session_id)" type="button" data-toggle="modal" data-target=".bs-example-modal-sm_one-{{pro.product_id}}"> <i class="glyphicon glyphicon-shopping-cart "></i> </button>
+                  <button ng-hide="session_id" class="btn btn-info btn-small" type="button" data-toggle="modal" data-target=".bs-example-modal-sm_one-{{pro.product_id}}"> <i class="glyphicon glyphicon-shopping-cart "></i> </button>
+                
+				</div>
 					
-					<div class="btn-group cart">
-						<button type="button" ng-click="addcart(pro.product_id,session_id)" class="btn btn-success">
-							Add to cart 
-						</button>
-					</div>
-					<div class="btn-group wishlist">
-						<button ng-click="addWishlist(pro.product_id,session_id)" type="button" class="btn btn-danger">
-							Add to wishlist 
-						</button>
-					</div>
 				</div>
 			</div> 
 		</div>
