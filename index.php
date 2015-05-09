@@ -204,6 +204,26 @@
 				return $http.get(serviceBase + 'getuserdetail');
 			}
 			
+			obj.getmyorders = function(){
+				return $http.get(serviceBase + 'getmyorders');
+			}
+			
+			obj.productorders = function(ID){
+				return $http.get(serviceBase + 'productorders&id=' + ID);
+			}
+			
+			obj.getproductdetail = function(ID){
+				return $http.get(serviceBase + 'getproductdetail&id=' + ID);
+			}
+			
+			obj.updaterating = function(rate,proid){
+				return $http.get(serviceBase + 'updaterating&id=' + rate +'&proid=' + proid);
+			}
+			
+			obj.giveReview = function(review,proid){
+				return $http.get(serviceBase + 'giveReview&review=' + review +'&proid=' + proid);
+			}
+			
 			obj.updatecart = function (id,qnt) {
 				return $http.post(serviceBase + 'updatecart', {id:id, quantity:qnt}).then(function (status) {
 					return status.data;
@@ -224,6 +244,12 @@
 			
 			obj.changepass = function (user) {
 			return $http.post(serviceBase + 'changepass', user).then(function (results) {
+				return results;
+			});
+			};
+			
+			obj.placeOrder = function (order) {
+			return $http.post(serviceBase + 'placeOrder', order).then(function (results) {
 				return results;
 			});
 			};
@@ -272,6 +298,19 @@
 			   when('/wishlist', {
 			      title: 'wishlist',
                   templateUrl: 'wishlist.php',
+                  controller: 'HomeController',
+				  requireLogin: 'Yes'
+               }).
+			   
+			   when('/checkout', {
+			      title: 'Checkout',
+                  templateUrl: 'checkout.php',
+                  controller: 'HomeController',
+				  requireLogin: 'Yes'
+               }).
+			   when('/order', {
+			      title: 'My Order',
+                  templateUrl: 'order.php',
                   controller: 'HomeController',
 				  requireLogin: 'Yes'
                }).
@@ -463,6 +502,30 @@
 				});             
 			};
 			
+			$scope.paymentForm = function(form) {
+                services.placeOrder(form).then(function(data){
+                   // alert(data);		
+					if(data.data.status=='Error'){
+					   $scope.error = data.data.msg;
+					}else if(data.data.status=='Success'){ 
+                       $scope.success = data.data.msg; 
+					}
+				});        
+			};
+			
+			$scope.revieweForm = function(comment,id) {
+			   
+                services.giveReview(comment,id).then(function(data){
+                    				
+					if(data.data.status=='Error'){
+					   $scope.message = data.data.msg;
+					}else if(data.data.status=='Success'){ 
+                       $scope.message = data.data.msg; 
+					}
+				});    
+              				
+			};
+			
 			
 			
 			$scope.addcart = function(proid,user_id) { 
@@ -552,6 +615,10 @@
 				}); 
 			},
 			
+			$scope.checkout = function(amount) { 
+				alert(amount);
+			},
+			
 			
 			
 			$scope.updatecart = function(proid,qnt) {
@@ -560,6 +627,36 @@
 				});
 			},
 			
+			$scope.myOrders = function() { 
+				services.getmyorders().then(function(data){
+				    //alert(data);
+                    $scope.list = data.data;
+					$scope.totalItems = $scope.list.length;
+				}); 
+			},
+			
+			$scope.productorders = function(id) { 
+			    var obj = {product:null};
+				services.productorders(id).then(function(data){
+                    obj.product = data.data;
+				}); 
+				return obj;
+			},
+			
+			$scope.getStar = function(id) { 
+			    var obj = {star:null};
+				services.getrating(id).then(function(data){
+                    obj.star = data.data;
+				});
+				return obj;
+			},
+			
+			$scope.rating = 10;
+			$scope.rateFunction = function(rating,proid) {
+			    services.updaterating(rating,proid).then(function(data){	
+					//alert(data);
+				});
+			};
 			
 			$scope.changeForm = function(form) {
 				services.changepass(form).then(function(data){	
