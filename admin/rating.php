@@ -2,8 +2,8 @@
 	<h1>{{ title }}<small>Preview</small>                    </h1>
 	<ol class="breadcrumb">
 		<li><a href="#dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
-		<li><a href="#product"> Product List</a></li>
-		<li class="active"> Product</li>
+		<li><a href="#rating"> Review List</a></li>
+		<li class="active"> Review</li>
 	</ol>
 </section>
 <section class="content">
@@ -21,10 +21,9 @@
             <input type="text" ng-model="search" ng-change="filter()" placeholder="Filter" class="form-control" />
         </div>
         <div class="col-md-4">
-            <h4>Filtered {{ filtered.length }} of {{ totalItems}} total Product</h5>
+            <h4>Filtered {{ filtered.length }} of {{ totalItems}} total Result</h5>
         </div>
 		<div class="col-md-3"> 
-		 <a href="#product-form" class="btn btn-primary pull-right"> Add New Product</a>
 		 
 		</div>
     </div>
@@ -34,30 +33,23 @@
             <table class="table table-striped table-bordered">
             <thead>
             <th>Product Title&nbsp;<a ng-click="sort_by('product_title');"><i class="glyphicon glyphicon-sort"></i></a></th>
-            <th>Category&nbsp;<a ng-click="sort_by('product_category');"><i class="glyphicon glyphicon-sort"></i></a></th>
-            <th>Price&nbsp;<a ng-click="sort_by('product_price');"><i class="glyphicon glyphicon-sort"></i></a></th>
-            <th>Brand&nbsp;<a ng-click="sort_by('product_brand');"><i class="glyphicon glyphicon-sort"></i></a></th>
-			<th>Stock&nbsp;<a ng-click="sort_by('product_quantity');"><i class="glyphicon glyphicon-sort"></i></a></th>
-            <th>Product Type&nbsp;<a ng-click="sort_by('featured');"><i class="glyphicon glyphicon-sort"></i></a></th>
-            
-			<th>Action</th>
+            <th>User Name&nbsp;<a ng-click="sort_by('user_name');"><i class="glyphicon glyphicon-sort"></i></a></th>
+            <th>Review&nbsp;<a ng-click="sort_by('review');"><i class="glyphicon glyphicon-sort"></i></a></th>
+            <th>Rating&nbsp;<a ng-click="sort_by('rating');"><i class="glyphicon glyphicon-sort"></i></a></th>
+			
+			<!--<th>Action</th>-->
 			</thead>
             <tbody>
                 <tr ng-repeat="data in filtered = (list | filter:search | orderBy : predicate :reverse) | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
                     <td>{{data.product_title}}</td>
-                    <td>{{data.product_category}}</td>
-                    <td>{{data.product_price}}</td>
-                    <td>{{data.product_brand}}</td>
-					<td>{{data.product_quantity}}</td>
-                    <td>
-					<button ng-show="data.featured==1" ng-click="featured(data.product_id,data.featured)" class="btn btn-info">Feature</button>
-					<button ng-show="data.featured==0" ng-click="featured(data.product_id,data.featured)" class="btn btn-danger">General</button>
-					
-					</td>
-					<td><button ng-click="DeleteProduct(data.product_id,data.product_title)" class="btn btn-warning">Delete</button>
+                    <td>{{data.user_name}}</td>
+                    <td>{{data.review}}</td>
+                    <td>{{data.rating}}</td>
+					<!--
+                   <td><button ng-click="DeleteProduct(data.product_id,data.product_title)" class="btn btn-warning">Delete</button>
 					<a href="#/edit-product/{{data.product_id}}" class="btn btn-success">Edit</a>
 					
-					</td>
+					</td>-->
                 </tr>
             </tbody>
             </table>

@@ -30,6 +30,28 @@ if(!empty($_GET['product'])){
 	   $row = $result->fetch_assoc();
 	}
 }
+
+if(!empty($_GET['order_id'])){
+    $name = $_GET['order_id'];
+	$query="select * from tbl_order where order_id = $name";
+	$result = $mysqli->query($query) or die($mysqli->error.__LINE__);
+	$row = '';
+	if($result->num_rows > 0) {
+	   $row = $result->fetch_assoc();
+	}
+}
+
+if(!empty($_GET['order'])){
+    $name = $_GET['order'];
+	$query="select order_product from tbl_order where order_id = $name";
+	$result = $mysqli->query($query) or die($mysqli->error.__LINE__);
+	$row = '';
+	if($result->num_rows > 0) {
+	  //header("Content-Type: application/json");
+	  $row = $result->fetch_assoc();
+	  echo $row['order_product']; 
+	}
+}
 # JSON-encode the response
 $json_response = json_encode($row);
 

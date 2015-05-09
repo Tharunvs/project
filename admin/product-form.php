@@ -1,7 +1,7 @@
 
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
-                    <h1>Add a Product                    </h1>
+                    <h1>{{ title }}<small>Preview</small>                    </h1>
                     <ol class="breadcrumb">
                         <li><a href="#dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
                         <li><a href="#product"> Product List</a></li>
@@ -67,9 +67,20 @@
 										</div>
 										<div class="form-group">
                                             <label>Price</label>
-                                            <input type="text" name="product_price" class="form-control" ng-model="form.product_price" required>
+                                            <input type="number" min="1"  name="product_price" class="form-control" ng-model="form.product_price" required>
                                             <span style="color:red" ng-show="myForm.product_price.$dirty && myForm.product_price.$invalid">
-											<span ng-show="myForm.product_price.$error.required">Email is required.</span>
+											<span ng-show="myForm.product_price.$error.required">Product Price is required.</span>
+											<span ng-show="myForm.product_price.$error.min">Product Price should be more than 0.</span>
+											
+											</span>
+										</div>
+										
+										<div class="form-group">
+                                            <label>Available Product</label>
+                                            <input type="number" name="product_quantity" min="1" class="form-control" ng-model="form.product_quantity" required>
+                                            <span style="color:red" ng-show="myForm.product_quantity.$dirty && myForm.product_quantity.$invalid">
+											<span ng-show="myForm.product_quantity.$error.required">Product Quantity is required.</span>
+											<span ng-show="myForm.product_quantity.$error.min">Product Quantity should be more than 0.</span>
 											
 											</span>
 										</div>

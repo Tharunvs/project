@@ -1,3 +1,6 @@
+<?php 
+include('../include/config.php');
+?>
 <!DOCTYPE html>
 <html class="bg-black">
     <head>
@@ -27,16 +30,16 @@
              <form action="" method="post">
                 <div class="body bg-gray">
 				   <?php 
-				        include('../include/config.php');
+				        
                         if(isset($_POST['submit'])){
-						$query="select * from tbl_user where user_name='".$_POST['username']."' and user_password='".md5($_POST['password'])."'";
+						$query="select * from tbl_user where user_name='".$_POST['username']."' and user_password='".md5($_POST['password'])."' and user_role != 3";
 						$result = $mysqli->query($query) or die($mysqli->error.__LINE__);
 
 						
 						if($result->num_rows > 0) {
 							$row = $result->fetch_array();
-							$_SESSION["userid"] = $row['user_id'];
-                            $_SESSION["username"] = $row['user_name'];
+							$_SESSION["adminid"] = $row['user_id'];
+                            $_SESSION["adminname"] = $row['user_name'];
 							$_SESSION["role"] = $row['user_role'];
 							header('Location: dashboard.php');
 						}else{ ?>
