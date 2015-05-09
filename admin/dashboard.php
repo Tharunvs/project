@@ -17,7 +17,7 @@ header('Location: index.php');
 		
         <link href="../admin_design/css/admin.css" rel="stylesheet" type="text/css" />
         <style type="text/css">
-    
+    ul>li, a{cursor: pointer;}
     </style>
 <script src="../admin_design/js/jquery.min.js"></script>
 
@@ -27,7 +27,7 @@ header('Location: index.php');
         <header class="header">
             <a href="admin/dashboard" class="logo">
                
-                Welcome, Admin!
+                Admin Panel
             </a>
            
             <nav class="navbar navbar-static-top" role="navigation">
@@ -45,15 +45,22 @@ header('Location: index.php');
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="glyphicon glyphicon-user"></i>
-                                <span><?php echo $_SESSION['username']; ?><i class="caret"></i></span>
+                                <span><?php echo $_SESSION['adminname']; ?><i class="caret"></i></span>
                             </a>
                             <ul class="dropdown-menu">
                                 
                                
-                                
+                                <li class="user-body">
+                                    <div class="col-xs-7 text-center">
+                                        <a href="#changepass">Change Password </a>
+                                    </div>
+                                   
+                                </li>
                                
                                 <li class="user-footer">
-                                    
+                                    <div class="pull-left">
+                                        <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                    </div>
                                     <div class="pull-right">
                                         <a href="logout.php" class="btn btn-default btn-flat">Sign out</a>
                                     </div>
@@ -78,7 +85,7 @@ header('Location: index.php');
                         </li>
 						
 						
-                       
+                       <?php if($_SESSION['role']==1){ ?>
                         <li class="treeview">
                             <a href="#">
                                 <i class="fa fa-bar-chart-o"></i>
@@ -90,7 +97,7 @@ header('Location: index.php');
 								<li><a href="#employer-list"><i class="fa fa-angle-double-right"></i> Employer List</a></li>
                             </ul>
                         </li>
-						
+						<?php } ?>
 						<li class="treeview">
                             <a href="#">
                                 <i class="fa fa-bar-chart-o"></i>
@@ -100,6 +107,18 @@ header('Location: index.php');
                             <ul class="treeview-menu">
                                 <li><a href="#category"><i class="fa fa-angle-double-right"></i> Category</a></li>
 								<li><a href="#product"><i class="fa fa-angle-double-right"></i> Product</a></li>
+								<li><a href="#rating"><i class="fa fa-angle-double-right"></i> Rate And Review</a></li>
+                            </ul>
+                        </li>
+						
+						<li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-bar-chart-o"></i>
+                                <span>Order Module</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="#orders"><i class="fa fa-angle-double-right"></i> Orders</a></li>
                             </ul>
                         </li>
 						
@@ -126,6 +145,54 @@ header('Location: index.php');
         <script>
       var mainApp = angular.module("mainApp", ['ngRoute','ui.bootstrap','angularFileUpload']);
       
+mainApp.factory("services", ['$http', function($http) {
+		  var serviceBase = '../services/api.php?x='
+			var obj = {};
+			
+			
+			obj.productorders = function(ID){
+				return $http.get(serviceBase + 'productorders&id=' + ID);
+			}
+			
+            obj.getcategories = function(){
+				return $http.get(serviceBase + 'categories');
+			}
+			
+			obj.getreview = function(){
+				return $http.get(serviceBase + 'getreview');
+			}
+			
+			obj.changeStatus = function(id,status){
+				return $http.get(serviceBase + 'changeStatus&id='+id+'&status='+status);
+			}
+			
+			obj.updaterating = function(rate,proid){
+				return $http.get(serviceBase + 'updaterating?id=' + rate +'&proid=' + proid);
+			}
+			/*
+			obj.updatecart = function (id,qnt) {
+				return $http.post(serviceBase + 'updatecart', {id:id, quantity:qnt}).then(function (status) {
+					return status.data;
+				});
+			};
+			*/
+			obj.changepass = function (user) {
+			return $http.post(serviceBase + 'changepass', user).then(function (results) {
+				return results;
+			});
+			};
+		
+			obj.placeOrder = function (order) {
+			return $http.post(serviceBase + 'placeOrder', order).then(function (results) {
+				return results;
+			});
+			};
+            
+			return obj;   
+		}]);
+
+
+	  
       mainApp.config(['$routeProvider',
          function($routeProvider) {
             $routeProvider.
@@ -194,6 +261,26 @@ header('Location: index.php');
 					templateUrl: 'product-form.php',
 					controller: 'productController'
 			   }).
+			   when('/orders', {
+			      title: 'Orders Listing',
+                  templateUrl: 'order.php',
+                  controller: 'orderCrtl'
+               }).
+			   when('/billing/:OrderID', {
+					title: 'Order Billing',
+					templateUrl: 'billing.php',
+					controller: 'orderCrtl'
+			   }).
+			   when('/changepass', {
+			      title: 'Change Password',
+                  templateUrl: 'changepassword.php',
+                  controller: 'customersCrtl'
+               }).
+			   when('/rating', {
+			      title: 'Rate & Review List',
+                  templateUrl: 'rating.php',
+                  controller: 'reviewCrtl'
+               }).
                otherwise({
                   redirectTo: '/'
                });
@@ -269,7 +356,7 @@ mainApp.filter('startFrom', function() {
         return [];
     }
 });
-mainApp.controller('customersCrtl', function ($scope, $http, $location, $route, $timeout) {
+mainApp.controller('customersCrtl', function ($scope, $http, $location, $route, services, $timeout) {
     $http.get('getuser.php').success(function(data){
         $scope.list = data;
         $scope.currentPage = 1; //current page
@@ -296,18 +383,30 @@ mainApp.controller('customersCrtl', function ($scope, $http, $location, $route, 
         $route.reload();
     });
     };
+	
+	$scope.changeForm = function(form) {
+		services.changepass(form).then(function(data){	
+			if(data.data.status=='Error'){
+			   $scope.error = data.data.msg;
+			}else if(data.data.status=='Success'){ 
+			   $scope.success = data.data.msg;
+			  
+			}
+		});    
+	};
 });
 
-mainApp.controller('CategoryController', function ($scope, $http, $location, $route, $timeout) {
+mainApp.controller('CategoryController', function ($scope, $http, $location, $route, services, $timeout) {
     
 	var catlist = function(){
-	$http.get('getcategory.php').success(function(data){
-        $scope.list = data;
-        $scope.currentPage = 1; //current page
-        $scope.entryLimit = 5; //max no of items to display in a page
-        $scope.filteredItems = $scope.list.length; //Initially for no filter  
-        $scope.totalItems = $scope.list.length;
-    });
+	services.getcategories().then(function(data){
+		$scope.list = data.data;
+		$scope.currentPage = 1; //current page
+		$scope.entryLimit = 5; //max no of items to display in a page
+		$scope.filteredItems = $scope.list.length; //Initially for no filter  
+		$scope.totalItems = $scope.list.length;
+	});
+	
 	};
 	catlist();
     $scope.setPage = function(pageNo) {
@@ -348,7 +447,7 @@ mainApp.controller('CategoryController', function ($scope, $http, $location, $ro
     };
 });
 
-mainApp.controller('productController', function ($scope, $http, $location, $upload, $rootScope,$routeParams, $route, $timeout) {
+mainApp.controller('productController', function ($scope, $http, $location, $upload, $rootScope,$routeParams,services, $route, $timeout) {
     
 	var productlist = function(){
 	$http.get('getproduct.php').success(function(data){
@@ -428,6 +527,8 @@ mainApp.controller('productController', function ($scope, $http, $location, $upl
 		if(ID > 0){
 		$http.get('getuserdetail.php?product='+ID).success(function(data){
 			$scope.form = data;
+			$scope.form.product_price = parseInt(data.product_price);
+			$scope.form.product_quantity = parseInt(data.product_quantity);
 			$scope.form.old_image = data.product_image;
 			$scope.imgs = data.product_image.split(",");
 		});
@@ -445,7 +546,15 @@ mainApp.controller('productController', function ($scope, $http, $location, $upl
     });
     };
 	
+	$scope.featured = function(id,status) {
+		services.changeStatus(id,status).then(function(data){	
+			$route.reload();
+		});    
+	};
+	
 });
+
+
 
 mainApp.controller('empCrtl', function ($scope, $http, $location, $route, $timeout) {
     $http.get('getemployer.php').success(function(data){
@@ -474,6 +583,95 @@ mainApp.controller('empCrtl', function ($scope, $http, $location, $route, $timeo
         $route.reload();
     });
     };
+});
+
+mainApp.controller('orderCrtl', function ($scope, $http, $location, $route, $routeParams, services, $timeout) {
+    $http.get('getorder.php').success(function(data){
+        $scope.list = data;
+        $scope.currentPage = 1; //current page
+        $scope.entryLimit = 5; //max no of items to display in a page
+        $scope.filteredItems = $scope.list.length; //Initially for no filter  
+        $scope.totalItems = $scope.list.length;
+    });
+    $scope.setPage = function(pageNo) {
+        $scope.currentPage = pageNo;
+    };
+    $scope.filter = function() {
+        $timeout(function() { 
+            $scope.filteredItems = $scope.filtered.length;
+        }, 10);
+    };
+    $scope.sort_by = function(predicate) {
+        $scope.predicate = predicate;
+        $scope.reverse = !$scope.reverse;
+    };
+	
+	$scope.ChangeStatus = function(UID,Uname) {
+        $http.get('deleteuser.php?id=' + UID + '&status=' + Uname ).success(function(data){
+        $route.reload();
+        });
+    };
+	
+	$scope.getOrder = function() {
+	    var ID = $routeParams.OrderID;
+		$http.get('getuserdetail.php?order_id='+ID).success(function(data){
+			$scope.order = data;
+		});
+    };
+	
+	$scope.productorders = function() { 
+	    var ID = $routeParams.OrderID;
+		var obj = {product:null};
+		services.productorders(ID).then(function(data){
+			obj.product = data.data;
+		}); 
+		return obj;
+	};
+});
+
+mainApp.controller('reviewCrtl', function ($scope, $http, $location, $route, $routeParams, services, $timeout) {
+    services.getreview().then(function(data){
+			$scope.list = data.data;
+			$scope.currentPage = 1; //current page
+			$scope.entryLimit = 5; //max no of items to display in a page
+			$scope.filteredItems = $scope.list.length; //Initially for no filter  
+			$scope.totalItems = $scope.list.length;
+		});
+
+    $scope.setPage = function(pageNo) {
+        $scope.currentPage = pageNo;
+    };
+    $scope.filter = function() {
+        $timeout(function() { 
+            $scope.filteredItems = $scope.filtered.length;
+        }, 10);
+    };
+    $scope.sort_by = function(predicate) {
+        $scope.predicate = predicate;
+        $scope.reverse = !$scope.reverse;
+    };
+	
+	$scope.ChangeStatus = function(UID,Uname) {
+        $http.get('deleteuser.php?id=' + UID + '&status=' + Uname ).success(function(data){
+        $route.reload();
+        });
+    };
+	
+	$scope.getOrder = function() {
+	    var ID = $routeParams.OrderID;
+		$http.get('getuserdetail.php?order_id='+ID).success(function(data){
+			$scope.order = data;
+		});
+    };
+	
+	$scope.productorders = function() { 
+	    var ID = $routeParams.OrderID;
+		var obj = {product:null};
+		services.productorders(ID).then(function(data){
+			obj.product = data.data;
+		}); 
+		return obj;
+	};
 });
 
 mainApp.run(['$location', '$rootScope', function($location, $rootScope) {
