@@ -1,7 +1,7 @@
 
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
-                    <h1>Edit User Information                    </h1>
+                    <h1>{{ title }}<small>Preview</small>                    </h1>
                     <ol class="breadcrumb">
                         <li><a href="#dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
                         <li><a href="#user-list"> User List</a></li>
@@ -48,20 +48,14 @@
 								        <div class="box-body">
                                         
 										<div class="form-group">
-                                            <label>Full Name</label>
+                                            <label>User Name</label>
 											<input type="hidden" name="user_id" ng-model="form.user_id" />
                                             <input type="text" class="form-control" name="user" ng-model="form.user_name" required>
 										  <span style="color:red" ng-show="myForm.user.$dirty && myForm.user.$invalid">
 										  <span ng-show="myForm.user.$error.required">Username is required.</span>
 										  </span>
  									   </div>
-										<div class="form-group">
-                                            <label>Nick Name</label>
-                                            <input type="text" class="form-control" name="nickname" ng-model="form.user_nickname" required>
-                                            <span style="color:red" ng-show="myForm.nickname.$dirty && myForm.nickname.$invalid">
-										  <span ng-show="myForm.nickname.$error.required">Nickname is required.</span>
-										  </span>
-										</div>
+										
 										<div class="form-group">
                                             <label>Email</label>
                                             <input type="email" name="email" class="form-control" ng-model="form.user_email" required>
@@ -71,7 +65,15 @@
 											</span>
 										</div>
 										
-										
+										<div class="form-group">
+											<label for="phone">Phone</label>
+											
+											<input type="text" name="phone" class="form-control" ng-model="form.user_phone" ng-pattern="/^(\d{10,12})$/" required placeholder="Phone Number">
+											 <span style="color:red" ng-show="myForm.phone.$dirty && myForm.phone.$invalid">
+										  <span ng-show="myForm.phone.$error.required">Phone Number is required.</span>
+										  <span ng-show="myForm.phone.$error.pattern">Invalid Phone Number.</span>
+										  </span>
+										</div>
 										
                                         <div class="form-group">
                                             <label>Address</label>
@@ -82,11 +84,30 @@
 										</div>
                                         
                                         <div class="form-group">
-                                            <label>Gender</label>
-											<select class="form-control" name="gender" ng-model="form.user_gender">
-                                                <option value="M" >Male</option>
-                                                <option value="F" >Female</option>
-                                            </select>
+											<label>City</label>
+											<input type="text" name="city" class="form-control" ng-model="form.user_city" ng-pattern="/^([a-zA-Z' ]+)$/" required placeholder="City">
+											<span style="color:red" ng-show="myForm.city.$dirty && myForm.city.$invalid">
+										  <span ng-show="myForm.city.$error.required">City Name is required.</span>
+										  <span ng-show="myForm.city.$error.pattern">Invalid City Name.</span>
+										  </span>
+										</div>
+										
+										<div class="form-group">
+											<label for="address">State</label>
+											<input type="text" name="state" class="form-control" ng-model="form.user_state" ng-pattern="/^([a-zA-Z' ]+)$/" required placeholder="State">
+											<span style="color:red" ng-show="myForm.state.$dirty && myForm.state.$invalid">
+										  <span ng-show="myForm.state.$error.required">State is required.</span>
+										  <span ng-show="myForm.state.$error.pattern">Invalid State Name.</span>
+										  </span>
+										</div>
+										
+										<div class="form-group">
+											<label for="address">Zipcode</label>
+											<input type="text" name="zipcode" class="form-control" ng-model="form.user_zipcode" ng-pattern="/^(\d{6}-\d{5}|\d{6})$/" required placeholder="Zipcode">
+											<span style="color:red" ng-show="myForm.zipcode.$dirty && myForm.zipcode.$invalid">
+										  <span ng-show="myForm.zipcode.$error.required">Address is required.</span>
+										  <span ng-show="myForm.zipcode.$error.pattern">Invalid Zipcode.</span>
+										  </span>
 										</div>
 										
 

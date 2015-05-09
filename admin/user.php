@@ -1,5 +1,5 @@
 <section class="content-header">
-	<h1>User                    </h1>
+	<h1>{{ title }}<small>Preview</small>                    </h1>
 	<ol class="breadcrumb">
 		<li><a href="#dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
 		<li><a href="#user-list"> User List</a></li>
@@ -17,7 +17,12 @@
                 <option>100</option>
             </select>
         </div>
-        
+        <div class="col-md-3">Filter:
+            <input type="text" ng-model="search" ng-change="filter()" placeholder="Filter" class="form-control" />
+        </div>
+        <div class="col-md-4">
+            <h4>Filtered {{ filtered.length }} of {{ totalItems}} total User</h5>
+        </div>
 		<div class="col-md-3"> 
 		 <a href="#user-form" class="btn btn-primary pull-right"> Add New User</a>
 		 
@@ -28,17 +33,17 @@
         <div class="col-md-12" ng-show="filteredItems > 0">
             <table class="table table-striped table-bordered">
             <thead>
-            <th>User Name&nbsp;<a ng-click="sort_by('user_name');"></a></th>
-            <th>Address&nbsp;<a ng-click="sort_by('user_address');"></a></th>
-            <th>Nick Name&nbsp;<a ng-click="sort_by('user_nickname');"></a></th>
-            <th>Email&nbsp;<a ng-click="sort_by('user_email');"></a></th>
+            <th>User Name&nbsp;<a ng-click="sort_by('user_name');"><i class="glyphicon glyphicon-sort"></i></a></th>
+            <th>Address&nbsp;<a ng-click="sort_by('user_address');"><i class="glyphicon glyphicon-sort"></i></a></th>
+            <th>Phone&nbsp;<a ng-click="sort_by('user_phone');"><i class="glyphicon glyphicon-sort"></i></a></th>
+            <th>Email&nbsp;<a ng-click="sort_by('user_email');"><i class="glyphicon glyphicon-sort"></i></a></th>
             <th>Action</th>
 			</thead>
             <tbody>
                 <tr ng-repeat="data in filtered = (list | filter:search | orderBy : predicate :reverse) | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
                     <td>{{data.user_name}}</td>
                     <td>{{data.user_address}}</td>
-                    <td>{{data.user_nickname}}</td>
+                    <td>{{data.user_phone}}</td>
                     <td>{{data.user_email}}</td>
 
 					<td><button ng-click="DeleteData(data.user_id,data.user_name)" class="btn btn-warning">Delete</button>
