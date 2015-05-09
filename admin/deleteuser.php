@@ -28,6 +28,21 @@ $result = $mysqli->query($query) or die($mysqli->error.__LINE__);
 $arr['success'] = 'Product Deleted SuccessFully';
 }
 
+if(!empty($_GET['status'])){
+$status = $_GET['status'];
+if($status == 'Pending'){
+   $new = 'Approved';
+   $order_id = $_GET['id'];
+
+$query="UPDATE tbl_order SET status='".$new."' where order_id = $order_id";
+
+$result = $mysqli->query($query) or die($mysqli->error.__LINE__);
+
+$arr['success'] = 'Product Deleted SuccessFully';
+}
+
+}
+
 
 $json_response = json_encode($arr);
 
