@@ -257,8 +257,8 @@
 			    $error = array('status' => "Error", "msg" => "Product Already In Your Wishlist.");
 				$this->response($this->json($error),200);
 			}else{
-			//$query="INSERT INTO tbl_wishlist(product_id, user_id, status, datetime) VALUES ('".$id."','".$_SESSION['userid']."','Active','".date('Y-m-d H:i:s')."')";
-	        $query="INSERT INTO tbl_wishlist(product_id, user_id, status, datetime) VALUES ('".$id."','".$_SESSION['userid']."','Active','2015-06-07 12:06:45')";
+			$query="INSERT INTO tbl_wishlist(product_id, user_id, status, datetime) VALUES ('".$id."','".$_SESSION['userid']."','Active','".date('Y-m-d H:i:s')."')";
+	        //$query="INSERT INTO tbl_wishlist(product_id, user_id, status, datetime) VALUES ('".$id."','".$_SESSION['userid']."','Active','2015-06-07 12:06:45')";
 	
 			
 			$r = $this->mysqli->query($query) or die($this->mysqli->error.__LINE__);
@@ -487,8 +487,8 @@
             $row1 = $r1->fetch_assoc();
 			$amount = $row1['val'];
 			$order_id = time();
-		    //$date = date('Y-m-d');
-			$date = '2015-05-06';
+		    $date = date('Y-m-d');
+			//$date = '2015-05-06';
 			$expiry = $order['end_month'].'-'.$order['end_year'];
 			
 			$query="INSERT INTO tbl_order(order_id, order_product, user_id, order_name, order_address, order_city, order_country, card_expiry, card_number, card_name, card_cvv, user_zipcode,order_amount,status,order_date) VALUES ('".$order_id."','".$product."','".$order['user_id']."','".$order['user_name']."','".$order['user_address']."','".$order['user_city']."','".$order['user_country']."','".$expiry."','".$order['card_no']."','".$order['card_name']."','".$order['cvv_no']."','".$order['user_zipcode']."','".$amount."','Pending','".$date."')";
